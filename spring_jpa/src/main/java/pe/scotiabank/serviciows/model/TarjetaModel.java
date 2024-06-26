@@ -1,12 +1,15 @@
 package pe.scotiabank.serviciows.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
+import lombok.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "Tarjetas")
+@Getter
+@Setter
+@NoArgsConstructor
 public class TarjetaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
