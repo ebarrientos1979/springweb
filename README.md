@@ -10,6 +10,7 @@ El repositorio está organizado de la siguiente manera:
 
 - **/spring_web**: Contiene scripts y ejemplos básicos para empezar con Spring Web **Servicios REST**.
 - **/sprin_jpa**: Código para JPA
+- **/sprin_security**: Proyecto con Seguridad OAuth2
 
 ## Requisitos Previos
 
