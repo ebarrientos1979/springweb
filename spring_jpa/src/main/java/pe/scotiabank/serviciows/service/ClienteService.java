@@ -1,6 +1,7 @@
 package pe.scotiabank.serviciows.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 import pe.scotiabank.serviciows.dto.ClienteDTO;
 import pe.scotiabank.serviciows.dto.TarjetaDTO;
 import pe.scotiabank.serviciows.model.ClienteModel;
@@ -8,9 +9,11 @@ import pe.scotiabank.serviciows.model.CuentaModel;
 import pe.scotiabank.serviciows.model.TarjetaModel;
 import pe.scotiabank.serviciows.repository.ClienteRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ClienteService {
     private final ClienteRepository clientRepository;
     private final ModelMapper modelMapper;
@@ -29,7 +32,7 @@ public class ClienteService {
 
     public List<TarjetaDTO> getTarjetaClienteById(Integer id){
         Optional<ClienteModel> cliente = clientRepository.findById(id);
-        List<TarjetaDTO> listaTarjetas = null;
+        List<TarjetaDTO> listaTarjetas = new ArrayList<TarjetaDTO>();
 
         if(cliente.isPresent()){
             ClienteModel miCliente = cliente.get();

@@ -1,10 +1,10 @@
 package pe.scotiabank.serviciows.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pe.scotiabank.serviciows.dto.ClienteDTO;
+import pe.scotiabank.serviciows.dto.TarjetaDTO;
+import pe.scotiabank.serviciows.model.TarjetaModel;
 import pe.scotiabank.serviciows.service.ClienteService;
 
 import java.util.List;
@@ -23,5 +23,8 @@ public class ClienteController {
         return ResponseEntity.ok(this.clienteService.getAllClientes());
     }
 
-    //@GetMapping("/listarTarjetas/{id}")
+    @GetMapping("/listarTarjetas/{id}")
+    public ResponseEntity<List<TarjetaDTO>> getTarjetaClienteById(@PathVariable Integer id){
+        return ResponseEntity.ok(this.clienteService.getTarjetaClienteById(id));
+    }
 }
