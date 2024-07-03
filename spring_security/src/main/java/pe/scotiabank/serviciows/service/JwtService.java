@@ -24,23 +24,6 @@ public class JwtService implements IJwtService{
         return extractClaim(token, Claims::getSubject);
     }
 
-
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolvers.apply(claims);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().
-                setSigningKey(getSigningKey()).build().parseClaimsJwt(token)
-                .getBody();
-    }
-
-    private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSigninKey);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
     @Override
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
@@ -51,11 +34,37 @@ public class JwtService implements IJwtService{
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 20))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
-     }
+    }
+
+    private boolean isTokenExpired(String token){
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token){
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder().
+                setSigningKey(getSigningKey()).build().parseClaimsJwt(token)
+                .getBody();
+    }
+
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolvers.apply(claims);
+    }
+
+
+
+    private Key getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSigninKey);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 
 
     @Override
-    public boolean isValidToken(String token) {
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         return false;
     }
 }

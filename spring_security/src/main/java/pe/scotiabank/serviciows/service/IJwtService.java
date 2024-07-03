@@ -7,5 +7,5 @@ public interface IJwtService {
 
     String generateToken(UserDetails userDetails);
 
-    boolean isValidToken(String token);
+    boolean isTokenValid(String token, UserDetails userDetails);
 }

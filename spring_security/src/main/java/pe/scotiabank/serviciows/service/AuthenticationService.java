@@ -25,7 +25,10 @@ public class AuthenticationService implements IAuthenticationService {
                 password(passwordEncoder.encode(request.getPassword())).
                 role(Role.USER).build();
 
-        return null;
+        usuarioRepository.save(user);
+        String jwt = jwtService.generateToken(user);
+
+        return JwtAuthenticationResponse.builder().token(jwt).build();
     }
 
     @Override
