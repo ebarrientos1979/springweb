@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pe.scotiabank.serviciows.dto.JwtAuthenticationResponse;
+import pe.scotiabank.serviciows.dto.SignInRequest;
 import pe.scotiabank.serviciows.dto.SignUpRequest;
 import pe.scotiabank.serviciows.service.AuthenticationService;
 
@@ -21,4 +22,8 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.signup(signUpRequest));
     }
 
+    @PostMapping("/signin")
+    public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody SignInRequest signInRequest) {
+        return ResponseEntity.ok(authenticationService.signin(signInRequest));
+    }
 }

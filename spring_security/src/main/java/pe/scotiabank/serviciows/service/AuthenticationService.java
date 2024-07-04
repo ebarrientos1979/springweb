@@ -1,6 +1,7 @@
 package pe.scotiabank.serviciows.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pe.scotiabank.serviciows.dto.JwtAuthenticationResponse;
@@ -33,7 +34,16 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     public JwtAuthenticationResponse signin(SignInRequest request) {
-        return null;
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+        var user = usuarioRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        var jwt = jwtService.generateToken(user);
+        return JwtAuthenticationResponse.builder().token(jwt).build();
     }
 
     public AuthenticationService(final UsuarioRepository usuarioRepository, final PasswordEncoder passwordEncoder, final IJwtService jwtService, final AuthenticationManager authenticationManager) {
