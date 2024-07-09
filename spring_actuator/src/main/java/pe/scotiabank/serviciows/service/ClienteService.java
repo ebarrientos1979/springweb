@@ -1,5 +1,7 @@
 package pe.scotiabank.serviciows.service;
 
+import io.micrometer.core.instrument.Counter;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import pe.scotiabank.serviciows.dto.ClienteDTO;
@@ -14,19 +16,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ClienteService {
     private final ClienteRepository clientRepository;
     private final ModelMapper modelMapper;
+    private final Counter contarClientes;
 
-    public ClienteService(ClienteRepository clientRepository, ModelMapper modelMapper) {
-        this.clientRepository = clientRepository;
-        this.modelMapper = modelMapper;
-    }
 
     public List<ClienteDTO> getAllClientes(){
         List<ClienteModel> clientes = clientRepository.findAll();
         List<ClienteDTO> clienteDTOS = clientes.stream().
                 map(cliente -> modelMapper.map(cliente, ClienteDTO.class)).toList();
+        contarClientes.increment();
         return clienteDTOS;
     }
 
