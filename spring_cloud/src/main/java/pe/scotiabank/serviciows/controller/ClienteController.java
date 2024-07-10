@@ -1,5 +1,6 @@
 package pe.scotiabank.serviciows.controller;
 
+import io.micronaut.context.annotation.ConfigurationProperties;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
