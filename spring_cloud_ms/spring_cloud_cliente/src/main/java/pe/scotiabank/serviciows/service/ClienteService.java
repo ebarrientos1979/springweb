@@ -45,4 +45,26 @@ public class ClienteService {
         }
         return listaTarjetas;
     }
+
+    public void deleteCliente(Integer id) {
+        //controlar si se elimino o no
+        boolean exists = clientRepository.existsById(id);
+        System.out.println(exists);
+        if (!exists) {
+            throw new RuntimeException(String.format("El id %d no existe para eliminar", id));
+        }
+        clientRepository.deleteById(id);
+        exists = clientRepository.existsById(id);
+        System.out.println(exists);
+        if (exists) {
+            throw new RuntimeException(String.format("El cliente %d NO fue eliminado correctamente", id));
+        }
+    }
+
+
+    public ClienteDTO saveCliente(ClienteDTO clienteDTO) {
+        ClienteModel clienteModel = modelMapper.map(clienteDTO, ClienteModel.class);
+        ClienteModel clienteGuardado = clientRepository.save(clienteModel);
+        return modelMapper.map(clienteGuardado, ClienteDTO.class);
+    }
 }
